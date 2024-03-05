@@ -24,8 +24,8 @@ namespace WebScrapper
 
             while (pageIndex < 50)
             {
+                Console.WriteLine($"Downloading Page {pageIndex + 1} of 50");
                 /// First download the html page
-                /// 
                 if (pageIndex == 0)
                 {
                     await fileDownloader.Download("index.html", true);
@@ -34,6 +34,8 @@ namespace WebScrapper
                 {
                     await fileDownloader.Download($"{homePageUrl}catalogue/page-{pageIndex}.html", false);
                 }
+
+                // Download contents
 
                 var currenPageUrl = pageIndex == 0 ? homePageUrl : $"{homePageUrl}catalogue/page-{pageIndex}.html";
 
@@ -45,11 +47,11 @@ namespace WebScrapper
                 foreach (var productHTMLElement in productHTMLElements)
                 {
                     var url = HtmlEntity.DeEntitize(productHTMLElement.QuerySelector("a")?.Attributes["href"].Value);
-                    var image = HtmlEntity.DeEntitize(productHTMLElement.QuerySelector("img")?.Attributes["src"].Value);
+                    var imageUrl = HtmlEntity.DeEntitize(productHTMLElement.QuerySelector("img")?.Attributes["src"].Value);
 
-                    if (image != null)
+                    if (imageUrl != null)
                     {
-                        await fileDownloader.Download(image);
+                        await fileDownloader.Download(imageUrl);
                     }
                     if (url != null)
                     {
