@@ -20,7 +20,7 @@ namespace WebScrapper
             var web = new HtmlWeb();
             var pageIndex = 0;
             HtmlDocument document;
-            FileDownloader fileDownloader = new FileDownloader(homePageUrl);
+            var fileDownloader = new FileDownloader(homePageUrl);
 
             while (pageIndex < 50)
             {

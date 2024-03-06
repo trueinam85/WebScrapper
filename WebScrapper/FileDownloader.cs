@@ -19,16 +19,15 @@ namespace WebScrapper
             }
 
             DownloadedFiles.Add(filePath);
-
             filePath = CleanUrl(filePath);
 
             using var httpClient = new HttpClient();
             var resp = await httpClient.GetAsync(BaseUrl + filePath);
 
-
             var data = !resp.IsSuccessStatusCode && resp.StatusCode != HttpStatusCode.NotFound ? throw new Exception("Something went wrong!")
                  : await resp.Content.ReadAsByteArrayAsync();
 
+            // it means file should be saved in the root
             if (isHomePage || filePath.LastIndexOf('/') == -1)
             {
                 await SaveFile(filePath, data);
@@ -57,9 +56,7 @@ namespace WebScrapper
         {
             url = url.StartsWith(BaseUrl) ? url.Replace(BaseUrl, string.Empty) : url;
 
-            url = url.StartsWith("../") ? url.Replace("../", string.Empty) : url;
-
-            return url;
+            return url.StartsWith("../") ? url.Replace("../", string.Empty) : url;
         }
     }
 }
